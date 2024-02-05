@@ -1,6 +1,6 @@
-﻿using JwtTokenExample.DBContext;
+﻿using AccountShared.ViewModels;
+using JwtTokenExample.DBContext;
 using JwtTokenExample.Model;
-using JwtTokenExample.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -165,21 +165,24 @@ namespace JwtTokenExample.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private UserModel? AuthenticateUser(UserModel login)
-        {
-            UserModel user = null;
-
-            if (_context.Users.Any(a => a.Username == login.Username))
-            {
-                user = new UserModel { Username = "Vikash", Password = "123456" };
-            }
-            return user;
-        }
+     
 
         [HttpPost]
-        public IActionResult Test(IFormFile file)
+        public IActionResult TestPost()
         {
-            return Ok(file);
+            return Ok(new
+            {
+                message = "this is test post"
+            });
+        }
+        
+        [HttpGet]
+        public IActionResult TestGet(IFormFile file)
+        {
+            return Ok(new
+            {
+                message = "this is test get"
+            });
         }
 
     }
