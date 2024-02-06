@@ -59,7 +59,7 @@ namespace JwtTokenExample.Controllers
             var userExists = await _userManager.FindByNameAsync(register.Username);
 
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse { Status = false, Message = "User already exists!" });
 
             IdentityUser user = new IdentityUser()
             {
@@ -72,16 +72,16 @@ namespace JwtTokenExample.Controllers
             if (!result.Succeeded)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse
                 {
-                    Status = "Error",
+                    Status = false,
                     Message = result.Errors.First().Description
                 });
 
             }
 
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new ApiResponse { Status = true, Message = "User created successfully!" });
 
 
         }
@@ -165,19 +165,26 @@ namespace JwtTokenExample.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-     
 
+      
+            
         [HttpPost]
-        public IActionResult TestPost()
+        public IActionResult TestPost(object obj)
         {
+            if (obj.ToString() == "hello")
+            {
+                return BadRequest(obj);
+
+            }
             return Ok(new
             {
-                message = "this is test post"
+                message = "this is test post",
+                data = obj
             });
         }
-        
+
         [HttpGet]
-        public IActionResult TestGet(IFormFile file)
+        public IActionResult TestGet()
         {
             return Ok(new
             {
