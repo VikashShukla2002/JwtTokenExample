@@ -5,11 +5,11 @@ namespace AccountShared.ViewModels
     public class RegisterModel
     {
         [Required(ErrorMessage = "User Name is required")]
-        [Remote("IsUsernameAvailable", "Home")]
+        [Remote("IsUsernameAvailable", "Account")]
         public string? Username { get; set; }
 
         [EmailAddress]
-        [Remote("IsEmailAvailable", "Home")]
+        [Remote("IsEmailAvailable", "Account")]
         [Required(ErrorMessage = "Email is required")]
         public string? Email { get; set; }
 

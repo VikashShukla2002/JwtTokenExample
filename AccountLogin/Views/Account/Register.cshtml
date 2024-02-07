@@ -2,25 +2,8 @@
 
 
 <h3>Register Page</h3>
-@*  <form asp-controller="Home" asp-action="Register" method="post">
-        <div class="mb-3">
-            <label for="Username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="Username" name="Username" asp-for="Username" required>
 
-        </div>
-        <div class="mb-3">
-            <label for="Email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="Email" name="Email" asp-for="Email" required>
-        </div>
-        <div class="mb-3">
-            <label for="Password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="Password" name="Password" asp-for="Password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form> *@
-
-
-<form asp-controller="Home" asp-action="Register" method="post" id="registerForm">
+<form  method="post" id="registerForm">
     <div class="mb-3">
         <label for="Username" class="form-label">Username</label>
         <input type="text" class="form-control" id="Username" name="Username" asp-for="Username">
