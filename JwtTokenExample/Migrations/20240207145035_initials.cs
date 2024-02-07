@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace JwtTokenExample.Migrations.ApplicationDb
+namespace JwtTokenExample.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalIdentity : Migration
+    public partial class initials : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace JwtTokenExample.Migrations.ApplicationDb
+namespace JwtTokenExample.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240205095656_InitalIdentity")]
-    partial class InitalIdentity
+    [Migration("20240207145035_initials")]
+    partial class initials
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

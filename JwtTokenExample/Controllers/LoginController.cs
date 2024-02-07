@@ -135,8 +135,6 @@ namespace JwtTokenExample.Controllers
         public IActionResult SignUp([FromBody] UserResponseModel login)
         {
 
-
-
             var loginUser = new UserModel
             {
                 Username = login.Username,
@@ -147,8 +145,6 @@ namespace JwtTokenExample.Controllers
             return Ok(new { status = true, message = "Account has been created" }); ;
 
         }
-
-
 
 
         private string GenerateJSONWebToken(UserModel userInfo)

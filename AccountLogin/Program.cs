@@ -27,6 +27,17 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = "[283057852668-ku1ef47kicv6oaf6t360ige39b2pdem0.apps.googleusercontent.com]";
+    options.ClientSecret = "[AIzaSyASbxFzM6mWqwU8jSzdY72504ws7SXo9zc]";
+    // You can set other options as needed.
+});
+
+
+
+
+
 builder.Services.AddHttpClient();
 var app = builder.Build();
 
