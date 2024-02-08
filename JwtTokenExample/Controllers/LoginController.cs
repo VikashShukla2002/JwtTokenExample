@@ -19,15 +19,17 @@ namespace JwtTokenExample.Controllers
     {
         private IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
 
         private UserDb _context;
 
-        public LoginController(IConfiguration config, UserDb context, UserManager<IdentityUser> userManager)
+        public LoginController(IConfiguration config, UserDb context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _configuration = config;
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [AllowAnonymous]
@@ -187,6 +189,40 @@ namespace JwtTokenExample.Controllers
                 message = "this is test get"
             });
         }
+
+
+
+        //[HttpPost]
+        //public IActionResult ExternalLogin(string provider)
+        //{
+        //    var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account");
+        //    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        //    return new ChallengeResult(provider, properties);
+        //}
+
+      
+        //public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        //{
+        //    if (remoteError != null)
+        //    {
+        //        return RedirectToAction(nameof(Login));
+        //    }
+        //    var info = await _signInManager.GetExternalLoginInfoAsync();
+        //    if (info == null)
+        //    {
+        //        return RedirectToAction(nameof(Login));
+        //    }
+
+        //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+        //    return RedirectToAction(nameof(Login));
+        //}
+
+
 
     }
 }

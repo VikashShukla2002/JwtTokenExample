@@ -21,6 +21,10 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+<a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google">Sign in with Google</a>
+<a asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Facebook">Sign in with Facebook</a>
+
+    
 @section Scripts {
 
     <partial name="_ValidationScriptsPartial">
