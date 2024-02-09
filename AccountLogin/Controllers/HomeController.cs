@@ -1,7 +1,11 @@
 using AccountLogin.Models;
 using AccountShared.ViewModels;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -9,6 +13,7 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
+
 
 namespace AccountLogin.Controllers
 {
@@ -19,7 +24,6 @@ namespace AccountLogin.Controllers
 
         //private readonly UserManager<IdentityUser> _userManager;
         //private readonly SignInManager<IdentityUser> _signInManager;
-
 
         public HomeController(ILogger<HomeController> logger, HttpClient httpClient)
         {
@@ -73,6 +77,9 @@ namespace AccountLogin.Controllers
         {
             return View();
         }
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

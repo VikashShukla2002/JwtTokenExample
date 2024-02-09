@@ -20,7 +20,6 @@ namespace AccountLogin.Controllers
         private readonly UserManager<IdentityUser> _userManager;
 
 
-
         public AccountController(HttpClient httpClient, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _httpClient = httpClient;
@@ -88,8 +87,8 @@ namespace AccountLogin.Controllers
 
         [AllowAnonymous]
         public IActionResult ExternalLogin(string provider)
-        { 
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", values: new {provider});
+        {
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", values: new { provider });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
@@ -132,11 +131,9 @@ namespace AccountLogin.Controllers
                 }
             }
 
-           // var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            // var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             return RedirectToAction(nameof(Login));
         }
-
-
 
 
         // For decode token
@@ -167,7 +164,7 @@ namespace AccountLogin.Controllers
         {
             await _signInManager.SignOutAsync();
             //await HttpContext.SignOutAsync();
-            
+
 
             return RedirectToAction("Login", "Account");
         }

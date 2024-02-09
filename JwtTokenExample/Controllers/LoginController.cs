@@ -164,8 +164,6 @@ namespace JwtTokenExample.Controllers
         }
 
 
-      
-            
         [HttpPost]
         public IActionResult TestPost(object obj)
         {

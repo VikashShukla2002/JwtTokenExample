@@ -27,10 +27,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 //                     });
 
 
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//                .AddEntityFrameworkStores<ApplicationDbContext>()
-//                .AddDefaultTokenProviders();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 builder.Services.AddAuthentication().AddGoogle(options =>
@@ -41,12 +37,15 @@ builder.Services.AddAuthentication().AddGoogle(options =>
 
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
-    options.AppId = "937991751167342";
-    options.AppSecret = "bd332720c9989f7d880c3380867a4ccd";
+    options.AppId = "401313952358484";
+    options.AppSecret = "c845aa880403fd54cff3f637089313a9";
 });
 
-
-
+builder.Services.AddAuthentication().AddMicrosoftAccount(options =>
+{
+    options.ClientId = "3f9d7851-46c6-45a3-aa5e-46b565c8e6b7";
+    options.ClientSecret = "IVr8Q~YAI0eOglDm24QmiNDN_.nuRot8kJHL0bNX";
+});
 
 
 builder.Services.AddHttpClient();
@@ -59,6 +58,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 
 app.UseHttpsRedirection();
