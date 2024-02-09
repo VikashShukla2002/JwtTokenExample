@@ -31,8 +31,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
-    options.ClientId = "275545007442-91j8alp2eleai9sfoi7v2vl5gnui9o7o.apps.googleusercontent.com";
-    options.ClientSecret = "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";   
+    options.ClientId = "275545007442-hu7dt0p1qi58f29qjolgppggikrlviqa.apps.googleusercontent.com";
+    options.ClientSecret = "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";   
 });
 
 builder.Services.AddAuthentication().AddFacebook(options =>

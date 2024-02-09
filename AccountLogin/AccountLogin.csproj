@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Discovery.v1" Version="1.66.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.66.0.3309" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.1" />

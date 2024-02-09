@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-
+@model Microsoft.AspNetCore.Http.IFormFile
 
 @{
     ViewData["Title"] = "Home Page";
@@ -17,3 +17,14 @@
         <a href="/weather/weather" class="btn btn-info">Weather List</a>
     </div>
 }
+
+<div>
+    <h2>Upload Image</h2>
+    <form asp-action="Upload" asp-controller="Home" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Select Image:</label>
+            <input type="file" name="file" id="file" class="form-control-file" />
+        </div>
+        <button type="submit" class="btn btn-primary">Upload Image</button>
+    </form>
+</div>
