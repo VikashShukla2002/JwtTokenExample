@@ -4,6 +4,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Discovery.v1;
 using Google.Apis.Discovery.v1.Data;
 using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.AspNetCore.Authentication;
@@ -13,10 +14,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading;
 using System.Web;
+using static Google.Apis.Drive.v3.FilesResource;
 //using Google.Apis.Discovery.v3;
 //using Google.Apis.Discovery.v1.Data;
 //using Google.Apis.Services;
@@ -94,46 +98,45 @@ namespace AccountLogin.Controllers
 
             if (file != null && file.Length > 0)
             {
-                // Create the service.
-
-                //var filePath = Path.Combine("uploadedFiles", file.FileName);
-                //using (var stream = new FileStream(filePath, FileMode.Create))
-                //{
-                //    await file.CopyToAsync(stream);
-                //}
-                //
+               
                 try
                 {
                     string[] scopes = new string[] { DriveService.Scope.Drive,
                                DriveService.Scope.DriveFile,};
 
-                    var clientId = "275545007442-91j8alp2eleai9sfoi7v2vl5gnui9o7o.apps.googleusercontent.com";      // From https://console.developers.google.com  
-                    var clientSecret = "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";
+                    var pathToCredential = @"new-project-413904-88f339ee2583.json";
+                    var uploadFileName = "logo.png";
+                    var directoryId = "18rHz6ZDsE6k_t000RipgvvJdpUPzr7SZ";
 
-                    var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
-                    {
-                        ClientId = clientId,
-                        ClientSecret = clientSecret
-                    }, scopes,
-                    Environment.UserName, CancellationToken.None, new FileDataStore("MyAppsToken"));
+                    var credential = GoogleCredential.FromFile(pathToCredential).CreateScoped(scopes);
+
                     DriveService service = new DriveService(new BaseClientService.Initializer()
                     {
-                        HttpClientInitializer = credential,
-                        ApplicationName = "VikashLoginWithGoogle",
+                        HttpClientInitializer = credential
 
                     });
-                    service.HttpClient.Timeout = TimeSpan.FromMinutes(100);
 
-                    //uploadFile(service, "" )
+                    var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+                    {
+                        Name = file.FileName,
+                        Parents = new List<string>()
+                        {
+                          directoryId
+                        }
+                    };
+                    var fsSource = new FileStream(uploadFileName, FileMode.Open, FileAccess.Read);
+                    var request = service.Files.Create(fileMetadata, fsSource, "image/png");
+                    request.Fields = "*";
+
+                   var results = await request.UploadAsync(CancellationToken.None);
+
+                    var data = request.ResponseBody;
                 }
                 catch (Exception ex)
                 {
 
 
                 }
-
-
-
 
                 return RedirectToAction("Privacy");
             }
@@ -144,7 +147,7 @@ namespace AccountLogin.Controllers
             }
         }
 
-        public Google.Apis.Drive.v3.Data.File uploadFile(DriveService _service, string _uploadFile, string _parent, IFormFile file, string _descrp = "Uploaded with .NET!" )
+        public Google.Apis.Drive.v3.Data.File uploadFile(DriveService _service, string _uploadFile, string _parent, IFormFile file, string _descrp = "Uploaded with .NET!")
         {
             if (System.IO.File.Exists(_uploadFile))
             {
@@ -159,13 +162,13 @@ namespace AccountLogin.Controllers
                 {
                     FilesResource.CreateMediaUpload request = _service.Files.Create(body, stream, file.ContentType);
                     request.SupportsTeamDrives = true;
-                  
+
                     request.Upload();
                     return request.ResponseBody;
                 }
                 catch (Exception e)
                 {
-                    
+
                     return null;
                 }
             }
