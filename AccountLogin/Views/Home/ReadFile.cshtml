@@ -1,0 +1,33 @@
+﻿@model IList<Google.Apis.Drive.v3.Data.File>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Images from Google Drive</title>
+</head>
+<body>
+    <h1>Images from Google Drive</h1>
+
+    <div>
+
+
+        <form asp-action="ReadFile" asp-controller="Home">
+            <div class="form-group">
+                @foreach (var imageFile in Model)
+                {
+                    @* <img src="@Url.Action("GetImage", new { fileId = imageFile.Id })" alt="@imageFile.Name" /> *@
+                    @* <img src="@( $"https://drive.usercontent.google.com/download?id={imageFile.Id}&export=view&authuser=0")" alt="@imageFile.Name" /> *@
+                    @* <img src="@( $"https://drive.google.com/uc?id={imageFile.Id}&export=view&authuser=0")" alt="@imageFile.Name" /> *@
+
+                  
+                        <img height="25%" width="25%" src="@( $"https://lh3.google.com/u/0/d/{imageFile.Id}")" alt="@imageFile.Name" />
+                   
+                }
+            </div>
+
+        </form>
+
+
+    </div>
+</body>
+</html>

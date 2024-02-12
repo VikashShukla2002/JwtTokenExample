@@ -89,23 +89,16 @@ namespace AccountLogin.Controllers
         }
 
 
-
-
-
         public async Task<IActionResult> Upload(IFormFile file)
         {
-
-
             if (file != null && file.Length > 0)
             {
-               
                 try
                 {
                     string[] scopes = new string[] { DriveService.Scope.Drive,
                                DriveService.Scope.DriveFile,};
 
                     var pathToCredential = @"new-project-413904-88f339ee2583.json";
-                    var uploadFileName = "logo.png";
                     var directoryId = "18rHz6ZDsE6k_t000RipgvvJdpUPzr7SZ";
 
                     var credential = GoogleCredential.FromFile(pathToCredential).CreateScoped(scopes);
@@ -124,89 +117,87 @@ namespace AccountLogin.Controllers
                           directoryId
                         }
                     };
-                    var fsSource = new FileStream(uploadFileName, FileMode.Open, FileAccess.Read);
-                    var request = service.Files.Create(fileMetadata, fsSource, "image/png");
+                    //    var fsSource = new FileStream(uploadFileName, FileMode.Open, FileAccess.Read);
+                    var stream = file.OpenReadStream();
+                    var request = service.Files.Create(fileMetadata, stream, file.ContentType);
+                    //  var request = service.Files.Create(fileMetadata, fsSource, "image/png");
                     request.Fields = "*";
 
-                   var results = await request.UploadAsync(CancellationToken.None);
+                    var results = await request.UploadAsync(CancellationToken.None);
 
                     var data = request.ResponseBody;
                 }
                 catch (Exception ex)
                 {
-
-
                 }
 
                 return RedirectToAction("Privacy");
             }
             else
             {
-
                 return View("Error");
             }
         }
 
-        public Google.Apis.Drive.v3.Data.File uploadFile(DriveService _service, string _uploadFile, string _parent, IFormFile file, string _descrp = "Uploaded with .NET!")
+
+        public IActionResult ReadFile()
         {
-            if (System.IO.File.Exists(_uploadFile))
-            {
-                Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
-                body.Name = System.IO.Path.GetFileName(_uploadFile);
-                body.Description = _descrp;
-                body.MimeType = file.ContentType;
-                // body.Parents = new List<string> { _parent };// UN comment if you want to upload to a folder(ID of parent folder need to be send as paramter in above method)
-                byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
-                System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
-                try
-                {
-                    FilesResource.CreateMediaUpload request = _service.Files.Create(body, stream, file.ContentType);
-                    request.SupportsTeamDrives = true;
+            string fileID = "18rHz6ZDsE6k_t000RipgvvJdpUPzr7SZ";
+            string credentialsPath = @"new-project-413904-88f339ee2583.json";
 
-                    request.Upload();
-                    return request.ResponseBody;
-                }
-                catch (Exception e)
-                {
-
-                    return null;
-                }
-            }
-            else
+            GoogleCredential credential;
+            using (var stream = new FileStream(credentialsPath, FileMode.Open, FileAccess.Read))
             {
-                return null;
+                credential = GoogleCredential.FromStream(stream)
+                    .CreateScoped(new[] { DriveService.Scope.Drive });
             }
+
+            var service = new DriveService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential
+            });
+
+            var request = service.Files.List();
+            request.Q = $"'{fileID}' in parents and mimeType contains 'image/'";
+            var response = request.Execute();
+
+            return View(response.Files);    
+
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> UploadFile(MediaFile file)
+      
+
+        //public Google.Apis.Drive.v3.Data.File uploadFile(DriveService _service, string _uploadFile, string _parent, IFormFile file, string _descrp = "Uploaded with .NET!")
         //{
-        //    var service = new DiscoveryService(new BaseClientService.Initializer
+        //    if (System.IO.File.Exists(_uploadFile))
         //    {
-        //        ApplicationName = "Discovery Sample",
-        //        ApiKey = "",
-        //    });
-
-        //    // Run the request.
-        //    Console.WriteLine("Executing a list request...");
-        //    var result = await service.Apis.List().ExecuteAsync();
-
-        //    // Display the results.
-        //    if (result.Items != null)
-        //    {
-        //        foreach (DirectoryList.ItemsData api in result.Items)
+        //        Google.Apis.Drive.v3.Data.File body = new Google.Apis.Drive.v3.Data.File();
+        //        body.Name = System.IO.Path.GetFileName(_uploadFile);
+        //        body.Description = _descrp;
+        //        body.MimeType = file.ContentType;
+        //        // body.Parents = new List<string> { _parent };// UN comment if you want to upload to a folder(ID of parent folder need to be send as paramter in above method)
+        //        byte[] byteArray = System.IO.File.ReadAllBytes(_uploadFile);
+        //        System.IO.MemoryStream stream = new System.IO.MemoryStream(byteArray);
+        //        try
         //        {
-        //            Console.WriteLine(api.Id + " - " + api.Title);
+        //            FilesResource.CreateMediaUpload request = _service.Files.Create(body, stream, file.ContentType);
+        //            request.SupportsTeamDrives = true;
+
+        //            request.Upload();
+        //            return request.ResponseBody;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            return null;
         //        }
         //    }
-
-
-        //    return View();
+        //    else
+        //    {
+        //        return null;
+        //    }
         //}
 
-
-
-
+      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
