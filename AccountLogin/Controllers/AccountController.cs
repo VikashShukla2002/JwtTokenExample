@@ -35,7 +35,6 @@ namespace AccountLogin.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-
             if (ModelState.IsValid)
             {
                 var endpoint = "api/Login/SignIn";
@@ -45,28 +44,19 @@ namespace AccountLogin.Controllers
                     var apiResponse = await response.Content.ReadAsStringAsync();
                     var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
                     IdentityUser? user = await _userManager.FindByNameAsync(loginModel.Username);
-
                     var claims = ParseClaimsFromJwt(tokenResponse!.Token);
                     var claimsList = claims?.ToList();
-
                     var claimsIdentity = new ClaimsIdentity(
                     claimsList, CookieAuthenticationDefaults.AuthenticationScheme);
-
                     var authProperties = new AuthenticationProperties { };
-
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
                     Response.Cookies.Append("Token", tokenResponse.Token);
-
                     _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.Token);
                     if (user != null)
                     {
                         await _signInManager.SignOutAsync();
                         var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, isPersistent: false, lockoutOnFailure: false);
-
                     }
-
-
                     return RedirectToAction("Index", "Home");
                 }
                 else if (response.StatusCode == HttpStatusCode.Unauthorized) // 401 Unauthorized
@@ -79,9 +69,7 @@ namespace AccountLogin.Controllers
                     ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
                     return View(loginModel);
                 }
-
             }
-
             return View(loginModel);
         }
 
@@ -105,7 +93,6 @@ namespace AccountLogin.Controllers
             {
                 return RedirectToAction(nameof(Login));
             }
-
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
@@ -130,7 +117,6 @@ namespace AccountLogin.Controllers
                     }
                 }
             }
-
             // var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             return RedirectToAction(nameof(Login));
         }

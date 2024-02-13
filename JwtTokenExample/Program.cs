@@ -78,7 +78,6 @@ builder.Services.AddAuthentication(options =>
             ClockSkew = TimeSpan.Zero
 
 
-
         };
     });
 
